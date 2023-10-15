@@ -1,70 +1,53 @@
-import PokedexCard from "./components/PokedexCard";
-import { gql, useQuery } from "urql";
+import { PokedexSelect } from "./components/PokedexSelect";
+import { useState } from "react";
+import { Outlet, useOutletContext } from "react-router-dom";
 
-const query = gql`
-  query MyQuery2 {
-    pokemon_v2_pokemonspecies(
-      where: { pokemon_v2_pokemondexnumbers: { pokedex_id: { _eq: 7 } } }
-    ) {
-      name
-      pokemon_v2_pokemondexnumbers(where: { pokedex_id: { _eq: 7 } }) {
-        pokedex_number
-      }
-      pokemon_v2_pokemons {
-        pokemon_v2_pokemonsprites {
-          sprites
-        }
-      }
-    }
-    pokemon_v2_type {
-      name
-    }
-  }
-`;
+type OutletContext = {
+  pokedexId: number;
+  versionGroupId: number;
+  generationId: number;
+};
 
 function App() {
-  const [result] = useQuery({
-    query: query,
-  });
+  // Used to fetch the right list
+  const [pokedexId, setPokedexId] = useState(2);
+  const [versionGroupId, setVersionGroupId] = useState(1);
+  const [generationId, setGenerationId] = useState(1);
 
-  const { data, fetching, error } = result;
+  function updatePokedex(
+    pokedexId: number,
+    versionGroupId: number,
+    generationId: number
+  ): void {
+    setPokedexId(pokedexId);
+    setVersionGroupId(versionGroupId);
+    setGenerationId(generationId);
+  }
 
-  if (fetching) return <>Loading...</>;
-  if (error) return <>error..</>;
   return (
     <>
       <header>
         <div className="nav-wrapper">
-          Pokedex
-          <nav></nav>
+          <h1 className="logo">Pokedex</h1>
+
+          <PokedexSelect handlePokedexChange={updatePokedex} />
         </div>
       </header>
-      <main>
-        {data.pokemon_v2_pokemonspecies.map((pokemon) => {
-          console.log(pokemon);
-          const images = JSON.parse(
-            pokemon.pokemon_v2_pokemons[0].pokemon_v2_pokemonsprites[0].sprites
-          );
-          console.log(images);
-          const url = images.other["official-artwork"].front_default.replace(
-            "/media/",
-            "https://raw.githubusercontent.com/PokeAPI/sprites/master/"
-          );
 
-          return (
-            <PokedexCard
-              name={pokemon.name}
-              imageUrl={url}
-              pokedexNumber={
-                pokemon.pokemon_v2_pokemondexnumbers[0].pokedex_number
-              }
-            />
-          );
-        })}
+      <main>
+        <Outlet
+          context={
+            { pokedexId, versionGroupId, generationId } satisfies OutletContext
+          }
+        ></Outlet>
       </main>
       <footer></footer>
     </>
   );
+}
+
+export function useRouterContext() {
+  return useOutletContext<OutletContext>();
 }
 
 export default App;

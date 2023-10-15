@@ -1,18 +1,17 @@
 .card {
   max-width: 10rem;
-  font-family: "Pokemon Classic";
-  border: 1px solid black;
+  font-family: "Ariston Comic Font";
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--blue);
+  background-color: #ffffff77;
+  border: 1px solid #00000032;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.2);
-  box-shadow: 6px 6px rgba(0, 0, 0, 0.2);
+  border-radius: 0.8rem;
 
-  --notchSize: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
 
-  clip-path: polygon(
-    0% 0%,
-    calc(100% - var(--notchSize)) 0%,
-    100% var(--notchSize),
-    100% 100%,
-    0% 100%
-  );
+.pokemon-name {
+  margin-top: 1rem;
 }
