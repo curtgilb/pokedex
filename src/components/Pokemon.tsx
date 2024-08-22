@@ -1,8 +1,7 @@
 import { useParams } from "react-router-dom";
-import { graphql } from "../gql";
-import { useRouterContext } from "../App";
 import { useQuery } from "urql";
-import { getArtworkUrl } from "../utils/utils";
+import { useRouterContext } from "../App";
+import { graphql } from "../gql";
 import { capitalize } from "../utils/utils";
 import { Loader } from "./Loader";
 
@@ -142,10 +141,11 @@ export function Pokemon() {
       <div className="pokemon-detail-layout">
         <img
           className="pokemon-image"
-          src={getArtworkUrl(
-            "official-artwork",
-            pokemon?.pokemon_v2_pokemonsprites[0].sprites as string
-          )}
+          src={
+            pokemon?.pokemon_v2_pokemonsprites[0].sprites.other[
+              "official-artwork"
+            ].front_default
+          }
         ></img>
         <div className="description">
           <h2>Description</h2>
@@ -183,17 +183,19 @@ export function Pokemon() {
           <ol className="pokemon-evolution">
             {pokemon?.pokemon_v2_pokemonspecy?.pokemon_v2_evolutionchain?.pokemon_v2_pokemonspecies.map(
               (evolution) => {
+                console.log(evolution);
                 return (
                   <>
                     <li key={evolution.id}>
                       <p>{capitalize(evolution.name)}</p>
 
                       <img
-                        src={getArtworkUrl(
-                          "official-artwork",
+                        src={
                           evolution.pokemon_v2_pokemons[0]
-                            .pokemon_v2_pokemonsprites[0].sprites
-                        )}
+                            .pokemon_v2_pokemonsprites[0].sprites.other[
+                            "official-artwork"
+                          ].front_default
+                        }
                         alt={evolution.name}
                       ></img>
                     </li>

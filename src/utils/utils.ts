@@ -12,6 +12,17 @@ export function getArtworkUrl(version: string, jsonString: string): string {
   return "";
 }
 
+export function toTitleCase(str: string | null | undefined) {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map(function (word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+}
+
 export function capitalize(word: string) {
   if (!word) return "";
   return word.charAt(0).toUpperCase() + word.slice(1);

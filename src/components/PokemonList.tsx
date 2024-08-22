@@ -43,27 +43,29 @@ export default function PokemonList() {
   }
   return (
     <div className="even-columns">
-      {data?.pokemon_v2_pokemonspecies.map((pokemon) => {
-        const images = JSON.parse(
-          pokemon.pokemon_v2_pokemons[0].pokemon_v2_pokemonsprites[0].sprites
-        );
-        const url = images.other["official-artwork"].front_default.replace(
-          "/media/",
-          "https://raw.githubusercontent.com/PokeAPI/sprites/master/"
-        );
-
-        return (
-          <PokedexCard
-            key={pokemon.id}
-            id={pokemon.id}
-            name={pokemon.name}
-            imageUrl={url}
-            pokedexNumber={
-              pokemon.pokemon_v2_pokemondexnumbers[0].pokedex_number
-            }
-          />
-        );
-      })}
+      {data?.pokemon_v2_pokemonspecies
+        .sort(
+          (a, b) =>
+            a.pokemon_v2_pokemondexnumbers[0].pokedex_number -
+            b.pokemon_v2_pokemondexnumbers[0].pokedex_number
+        )
+        .map((pokemon) => {
+          console.log(pokemon);
+          const url =
+            pokemon.pokemon_v2_pokemons[0].pokemon_v2_pokemonsprites[0].sprites
+              .other["official-artwork"].front_default;
+          return (
+            <PokedexCard
+              key={pokemon.id}
+              id={pokemon.id}
+              name={pokemon.name}
+              imageUrl={url}
+              pokedexNumber={
+                pokemon.pokemon_v2_pokemondexnumbers[0].pokedex_number
+              }
+            />
+          );
+        })}
     </div>
   );
 }

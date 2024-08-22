@@ -1,4 +1,4 @@
-import { PokedexSelect } from "./components/PokedexSelect";
+import { PokedexSelect } from "@/features/pokedex/PokedexSelect";
 import { useState } from "react";
 import { Outlet, useOutletContext } from "react-router-dom";
 
